@@ -1,21 +1,21 @@
 # =========================
 # Build Stage
 # =========================
-FROM eclipse-temurin:25-jdk-alpine AS builder
+# FROM eclipse-temurin:25-jdk-alpine AS builder
 
 # Set work directory
-WORKDIR /app
+# WORKDIR /app
 
 # Copy Maven wrapper and project files
-COPY .mvn/ .mvn/
-COPY mvnw pom.xml ./
-COPY src ./src
+# COPY .mvn/ .mvn/
+# COPY mvnw pom.xml ./
+# COPY src ./src
 
 # Ensure mvnw has execute permission
-RUN chmod +x mvnw
+# RUN chmod +x mvnw
 
 # Build the project (skip tests for faster build)
-RUN ./mvnw clean package
+# RUN ./mvnw clean package
 
 # =========================
 # Runtime Stage
@@ -25,7 +25,11 @@ FROM eclipse-temurin:25-jdk-alpine
 WORKDIR /app
 
 # Copy the packaged jar from the builder stage
-COPY --from=builder /app/target/*.jar app.jar
+# COPY --from=builder /app/target/*.jar app.jar
+
+# Copy the pre-built JAR file from Jenkins workspace
+# The JAR was already built in the "Package Application" stage
+COPY target/*.jar app.jar
 
 EXPOSE 8080
 
