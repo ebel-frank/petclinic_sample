@@ -5,7 +5,7 @@ metadata:
   labels:
     app: petclinic
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: petclinic
@@ -31,7 +31,7 @@ spec:
           httpGet:
             path: /actuator/health/liveness
             port: 8080
-          initialDelaySeconds: 100
+          initialDelaySeconds: 110 # Set to 110s to be safe
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 3
@@ -39,12 +39,10 @@ spec:
           httpGet:
             path: /actuator/health/readiness
             port: 8080
-          initialDelaySeconds: 40
+          initialDelaySeconds: 110 # Set to 110s to match liveness for simplicity
           periodSeconds: 5
           timeoutSeconds: 3
           failureThreshold: 3
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "prod"
-        - name: JAVA_OPTS
-          value: "-Xmx768m -Xms512m"
